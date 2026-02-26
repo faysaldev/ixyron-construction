@@ -1,4 +1,4 @@
-import type { Variants, Transition } from "motion/react";
+import type { Variants, Transition, Easing } from "motion/react";
 
 // ── Transition presets ──────────────────────────────────────────────────────
 export const spring: Transition = { type: "spring", stiffness: 100, damping: 20 };
@@ -128,12 +128,12 @@ export const heroLabelReveal: Variants = {
 // ── Card hover presets (use with whileHover) ────────────────────────────────
 export const cardHover = {
   y: -8,
-  transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
+  transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] as Easing },
 };
 
 export const cardHoverSubtle = {
   y: -4,
-  transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
+  transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] as Easing },
 };
 
 // ── Page transition ─────────────────────────────────────────────────────────
