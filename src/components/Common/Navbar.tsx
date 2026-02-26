@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
+import logo from "@/src/assets/logo_no_bg.png";
 
 const links = [
   { href: "/", label: "Home" },
@@ -46,9 +48,20 @@ const Navbar = () => {
       <nav className="container-wide px-4 md:px-8 h-20 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <span className="font-display text-2xl font-bold text-primary">
-            Lxyron
-          </span>
+          <Image
+            src={logo}
+            alt="Lxyron Constructive Works"
+            width={250}
+            height={100}
+            className="h-40 w-auto"
+          />
+          {/* <img
+            src="/logo_no_bg.png"
+            alt="Lxyron Constructive Works"
+            width={140}
+            height={40}
+            className="h-10 w-auto"
+          /> */}
         </Link>
 
         {/* Desktop Links */}
@@ -80,9 +93,13 @@ const Navbar = () => {
           aria-label="Toggle menu"
         >
           {open ? (
-            <X className={`w-6 h-6 ${scrolled ? "text-foreground" : "text-secondary-foreground"}`} />
+            <X
+              className={`w-6 h-6 ${scrolled ? "text-foreground" : "text-secondary-foreground"}`}
+            />
           ) : (
-            <Menu className={`w-6 h-6 ${scrolled ? "text-foreground" : "text-secondary-foreground"}`} />
+            <Menu
+              className={`w-6 h-6 ${scrolled ? "text-foreground" : "text-secondary-foreground"}`}
+            />
           )}
         </button>
       </nav>

@@ -8,8 +8,8 @@ import SectionHeading from "@/src/components/Common/SectionHeading";
 import { serviceDetails } from "@/src/data/services";
 
 const Services = () => (
-  <main className="pt-20">
-    <section className="section-padding bg-secondary">
+  <main>
+    <section className="pt-32 pb-20 px-4 md:pt-40 md:pb-28 md:px-8 bg-secondary">
       <div className="container-wide">
         <SectionHeading
           label="Our Services"

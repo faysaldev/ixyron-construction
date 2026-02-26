@@ -1,5 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Phone, Mail, MapPin } from "lucide-react";
+import logo from "@/src/assets/logo_no_bg.png";
 
 const quickLinks = [
   { href: "/about", label: "About Us" },
@@ -11,9 +13,18 @@ const quickLinks = [
 ];
 
 const serviceLinks = [
-  { href: "/services/construction-management", label: "Construction Management" },
-  { href: "/services/residential-construction", label: "Residential Construction" },
-  { href: "/services/commercial-construction", label: "Commercial Construction" },
+  {
+    href: "/services/construction-management",
+    label: "Construction Management",
+  },
+  {
+    href: "/services/residential-construction",
+    label: "Residential Construction",
+  },
+  {
+    href: "/services/commercial-construction",
+    label: "Commercial Construction",
+  },
   { href: "/services/interior-design", label: "Interior Design" },
   { href: "/services/renovation", label: "Renovation & Remodeling" },
 ];
@@ -26,9 +37,13 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <Link href="/" className="inline-block mb-4">
-              <span className="font-display text-2xl font-bold text-primary">
-                Lxyron
-              </span>
+              <Image
+                src={logo}
+                alt="Lxyron Constructive Works"
+                width={200}
+                height={100}
+                className="h-10 w-auto"
+              />
             </Link>
             <p className="text-secondary-foreground/60 text-sm leading-relaxed mb-4">
               Premium construction and interior solutions. Building excellence
@@ -106,7 +121,8 @@ const Footer = () => {
       <div className="border-t border-secondary-foreground/10">
         <div className="container-wide px-4 md:px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-secondary-foreground/40">
-            &copy; {new Date().getFullYear()} Lxyron Constructive Works. All rights reserved.
+            &copy; {new Date().getFullYear()} Lxyron Constructive Works. All
+            rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <Link

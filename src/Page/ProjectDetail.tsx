@@ -23,9 +23,9 @@ const ProjectDetail = ({ slug }: { slug: string }) => {
   const otherProjects = projects.filter((p) => p.slug !== slug).slice(0, 3);
 
   return (
-    <main className="pt-20">
+    <main>
       {/* Hero Image */}
-      <section className="relative h-[50vh] md:h-[60vh]">
+      <section className="relative h-[60vh] md:h-[70vh]">
         <img
           src={project.img}
           alt={project.title}

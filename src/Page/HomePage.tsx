@@ -100,11 +100,13 @@ const Index = () => {
     <main>
       {/* Hero */}
       <section className="relative min-h-screen flex items-center">
-        <img
-          src="/images/hero-construction.jpg"
-          alt="Modern construction site at golden hour"
+        <video
+          src="/heroVideo.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
           className="absolute inset-0 w-full h-full object-cover"
-          loading="eager"
         />
         <div className="absolute inset-0 bg-hero-overlay" />
         <div className="relative z-10 container-wide px-4 md:px-8 pt-20">
@@ -134,7 +136,7 @@ const Index = () => {
                 variant="outline"
                 size="lg"
                 asChild
-                className="border-secondary-foreground/20 text-secondary-foreground hover:bg-secondary-foreground/10"
+                className="border-secondary-foreground/20 text-secondary-foreground bg-secondary-foreground/10"
               >
                 <Link href="/projects">View Our Work</Link>
               </Button>
@@ -347,8 +349,8 @@ const Index = () => {
               Ready to Build Your Dream?
             </h2>
             <p className="text-primary-foreground/80 text-lg mb-8 max-w-xl mx-auto">
-              Get in touch today for a free consultation and let&apos;s bring your
-              vision to life.
+              Get in touch today for a free consultation and let&apos;s bring
+              your vision to life.
             </p>
             <Button size="lg" variant="secondary" asChild>
               <Link href="/contact">

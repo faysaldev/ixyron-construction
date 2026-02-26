@@ -14,9 +14,9 @@ const ServiceDetail = ({ slug }: { slug: string }) => {
   if (!service) return notFound();
 
   return (
-    <main className="pt-20">
+    <main>
       {/* Hero */}
-      <section className="relative py-24 md:py-32">
+      <section className="relative pt-32 pb-24 md:pt-40 md:pb-32">
         <img
           src={service.heroImg}
           alt={service.title}

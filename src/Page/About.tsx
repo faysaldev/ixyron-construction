@@ -14,9 +14,9 @@ const values = [
 ];
 
 const About = () => (
-  <main className="pt-20">
+  <main>
     {/* Hero */}
-    <section className="section-padding bg-secondary">
+    <section className="pt-32 pb-20 px-4 md:pt-40 md:pb-28 md:px-8 bg-secondary">
       <div className="container-wide">
         <SectionHeading
           label="About Us"
