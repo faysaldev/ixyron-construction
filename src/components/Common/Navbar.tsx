@@ -19,18 +19,20 @@ const links = [
 
 const Navbar = () => {
   const pathname = usePathname();
+  const [prevPathname, setPrevPathname] = useState(pathname);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    if (open) setOpen(false);
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
