@@ -3,6 +3,22 @@
 import { motion } from "motion/react";
 import { Target, Eye, Award, CheckCircle } from "lucide-react";
 import SectionHeading from "@/src/components/Common/SectionHeading";
+import AnimatedCounter from "@/src/components/Common/AnimatedCounter";
+import {
+  fadeInLeft,
+  fadeInRight,
+  fadeInUp,
+  staggerContainer,
+  staggerContainerFast,
+  staggerContainerSlow,
+  staggerItem,
+  staggerItemScale,
+  staggerItemLeft,
+  scaleIn,
+  cardHover,
+  cardHoverSubtle,
+  viewportOnce,
+} from "@/src/lib/animations";
 
 const values = [
   "Uncompromising quality in every detail",
@@ -16,8 +32,12 @@ const values = [
 const About = () => (
   <main>
     {/* Hero */}
-    <section className="pt-32 pb-20 px-4 md:pt-40 md:pb-28 md:px-8 bg-secondary">
-      <div className="container-wide">
+    <section className="pt-32 pb-20 px-4 md:pt-40 md:pb-28 md:px-8 bg-secondary relative overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
+      </div>
+      <div className="container-wide relative z-10">
         <SectionHeading
           label="About Us"
           title="Building Excellence Since 2010"
@@ -31,26 +51,47 @@ const About = () => (
     <section className="section-padding bg-background">
       <div className="container-wide grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+          variants={fadeInLeft}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          className="relative"
         >
           <img
             src="/images/about-team.jpg"
             alt="Lxyron team reviewing blueprints"
-            className="rounded-lg w-full object-cover aspect-video"
+            className="rounded-xl w-full object-cover aspect-video shadow-lg"
             loading="lazy"
           />
+          {/* Experience badge */}
+          <motion.div
+            variants={scaleIn}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            className="absolute -bottom-6 -right-4 md:right-6 bg-primary text-primary-foreground p-5 rounded-xl shadow-gold-lg"
+          >
+            <div className="font-display text-3xl font-bold">
+              <AnimatedCounter value="15+" />
+            </div>
+            <div className="text-primary-foreground/80 text-xs font-medium">
+              Years of
+              <br />
+              Excellence
+            </div>
+          </motion.div>
         </motion.div>
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+          variants={fadeInRight}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
         >
-          <span className="text-primary font-medium text-sm tracking-[0.2em] uppercase mb-3 block">
+          <span className="text-primary font-medium text-sm tracking-[0.2em] uppercase mb-3 inline-flex items-center gap-3">
+            <span className="inline-block w-8 h-[2px] bg-primary" />
             Our Story
           </span>
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4 mt-2">
             A Legacy of Quality Construction
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-4">
@@ -59,18 +100,42 @@ const About = () => (
             full-service construction powerhouse serving residential,
             commercial, and industrial clients.
           </p>
-          <p className="text-muted-foreground leading-relaxed">
+          <p className="text-muted-foreground leading-relaxed mb-6">
             Our approach combines traditional craftsmanship with modern
             technology, ensuring every project meets the highest standards of
             quality, safety, and sustainability.
           </p>
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { value: "250+", label: "Projects" },
+              { value: "98%", label: "Satisfaction" },
+            ].map((stat) => (
+              <div
+                key={stat.label}
+                className="p-4 rounded-lg bg-card border border-border"
+              >
+                <div className="font-display text-2xl font-bold text-primary">
+                  <AnimatedCounter value={stat.value} />
+                </div>
+                <div className="text-muted-foreground text-sm mt-1">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>
 
     {/* Mission & Vision */}
     <section className="section-padding bg-section-alt">
-      <div className="container-wide grid grid-cols-1 md:grid-cols-2 gap-8">
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportOnce}
+        className="container-wide grid grid-cols-1 md:grid-cols-2 gap-8"
+      >
         {[
           {
             icon: Target,
@@ -82,23 +147,25 @@ const About = () => (
             title: "Our Vision",
             text: "To be the most trusted and respected construction partner, known for transforming spaces and building communities that inspire generations.",
           },
-        ].map((item, i) => (
+        ].map((item) => (
           <motion.div
             key={item.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.15 }}
-            className="p-8 md:p-10 rounded-lg bg-card border border-border"
+            variants={staggerItemScale}
+            whileHover={cardHover}
+            className="p-8 md:p-10 rounded-xl bg-card border border-border hover:border-primary/20 hover:shadow-gold transition-all duration-300 group"
           >
-            <item.icon className="w-10 h-10 text-primary mb-4" />
+            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors duration-300">
+              <item.icon className="w-7 h-7 text-primary" />
+            </div>
             <h3 className="font-display text-2xl font-bold text-foreground mb-3">
               {item.title}
             </h3>
-            <p className="text-muted-foreground leading-relaxed">{item.text}</p>
+            <p className="text-muted-foreground leading-relaxed">
+              {item.text}
+            </p>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
 
     {/* Values */}
@@ -109,34 +176,49 @@ const About = () => (
           title="What Drives Us"
           description="These core principles guide every project we undertake."
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
-          {values.map((v, i) => (
+        <motion.div
+          variants={staggerContainerFast}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto"
+        >
+          {values.map((v) => (
             <motion.div
               key={v}
-              initial={{ opacity: 0, x: -10 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              className="flex items-center gap-3 p-4 rounded-lg bg-card border border-border"
+              variants={staggerItemLeft}
+              whileHover={cardHoverSubtle}
+              className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border hover:border-primary/20 hover:shadow-sm transition-all duration-300 group"
             >
-              <CheckCircle className="w-5 h-5 text-primary shrink-0" />
+              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
+                <CheckCircle className="w-4 h-4 text-primary" />
+              </div>
               <span className="text-foreground text-sm font-medium">{v}</span>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
 
     {/* Awards */}
-    <section className="section-padding bg-secondary">
-      <div className="container-wide text-center">
+    <section className="section-padding bg-secondary relative overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl" />
+      </div>
+      <div className="container-wide text-center relative z-10">
         <SectionHeading
           label="Recognition"
           title="Certifications & Awards"
           description="Our commitment to excellence has been recognized across the industry."
           light
         />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <motion.div
+          variants={staggerContainerSlow}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
           {[
             {
               icon: Award,
@@ -153,23 +235,23 @@ const About = () => (
               title: "Green Building Award",
               desc: "Awarded for sustainable construction practices and eco-friendly designs.",
             },
-          ].map((a, i) => (
+          ].map((a) => (
             <motion.div
               key={a.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="text-center"
+              variants={staggerItem}
+              whileHover={{ y: -6 }}
+              className="text-center group"
             >
-              <a.icon className="w-12 h-12 text-primary mx-auto mb-4" />
+              <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-primary/20 group-hover:shadow-gold transition-all duration-300">
+                <a.icon className="w-10 h-10 text-primary" />
+              </div>
               <h3 className="font-display text-lg font-semibold text-secondary-foreground mb-2">
                 {a.title}
               </h3>
               <p className="text-secondary-foreground/60 text-sm">{a.desc}</p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   </main>

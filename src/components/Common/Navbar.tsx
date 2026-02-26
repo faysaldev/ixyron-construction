@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import logo from "@/src/assets/logo_no_bg.png";
@@ -40,8 +41,11 @@ const Navbar = () => {
   };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
           ? "bg-background/95 backdrop-blur-md shadow-sm border-b border-border"
           : "bg-transparent"
@@ -50,20 +54,18 @@ const Navbar = () => {
       <nav className="container-wide px-4 md:px-8 h-20 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <Image
-            src={logo}
-            alt="Lxyron Constructive Works"
-            width={250}
-            height={100}
-            className="h-40 w-auto"
-          />
-          {/* <img
-            src="/logo_no_bg.png"
-            alt="Lxyron Constructive Works"
-            width={140}
-            height={40}
-            className="h-10 w-auto"
-          /> */}
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Image
+              src={logo}
+              alt="Lxyron Constructive Works"
+              width={250}
+              height={100}
+              className="h-40 w-auto"
+            />
+          </motion.div>
         </Link>
 
         {/* Desktop Links */}
@@ -72,7 +74,7 @@ const Navbar = () => {
             <Link
               key={link.href}
               href={link.href}
-              className={`text-sm font-medium transition-colors ${
+              className={`relative text-sm font-medium transition-colors duration-300 ${
                 isActive(link.href)
                   ? "text-primary"
                   : scrolled
@@ -81,18 +83,28 @@ const Navbar = () => {
               }`}
             >
               {link.label}
+              {isActive(link.href) && (
+                <motion.div
+                  layoutId="navbar-indicator"
+                  className="absolute -bottom-1 left-0 right-0 h-[2px] bg-primary rounded-full"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
             </Link>
           ))}
-          <Button size="sm" asChild>
-            <Link href="/request-quote">Get a Quote</Link>
-          </Button>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+            <Button size="sm" asChild className="shadow-gold">
+              <Link href="/request-quote">Get a Quote</Link>
+            </Button>
+          </motion.div>
         </div>
 
         {/* Mobile Toggle */}
-        <button
+        <motion.button
           onClick={() => setOpen(!open)}
           className="lg:hidden p-2"
           aria-label="Toggle menu"
+          whileTap={{ scale: 0.9 }}
         >
           {open ? (
             <X
@@ -103,33 +115,54 @@ const Navbar = () => {
               className={`w-6 h-6 ${scrolled ? "text-foreground" : "text-secondary-foreground"}`}
             />
           )}
-        </button>
+        </motion.button>
       </nav>
 
       {/* Mobile Menu */}
-      {open && (
-        <div className="lg:hidden bg-background border-t border-border">
-          <div className="container-wide px-4 py-6 flex flex-col gap-4">
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-sm font-medium py-2 transition-colors ${
-                  isActive(link.href)
-                    ? "text-primary"
-                    : "text-foreground hover:text-primary"
-                }`}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:hidden bg-background border-t border-border overflow-hidden"
+          >
+            <div className="container-wide px-4 py-6 flex flex-col gap-2">
+              {links.map((link, i) => (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05, duration: 0.3 }}
+                >
+                  <Link
+                    href={link.href}
+                    className={`block text-sm font-medium py-3 px-4 rounded-lg transition-all duration-200 ${
+                      isActive(link.href)
+                        ? "text-primary bg-primary/5"
+                        : "text-foreground hover:text-primary hover:bg-card"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
+              ))}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: links.length * 0.05, duration: 0.3 }}
+                className="mt-2"
               >
-                {link.label}
-              </Link>
-            ))}
-            <Button size="sm" asChild className="mt-2 w-full">
-              <Link href="/request-quote">Get a Quote</Link>
-            </Button>
-          </div>
-        </div>
-      )}
-    </header>
+                <Button size="sm" asChild className="w-full shadow-gold">
+                  <Link href="/request-quote">Get a Quote</Link>
+                </Button>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 };
 

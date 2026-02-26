@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Playfair_Display, DM_Sans } from "next/font/google";
 import Navbar from "@/src/components/Common/Navbar";
 import Footer from "@/src/components/Common/Footer";
+import ScrollProgress from "@/src/components/Common/ScrollProgress";
 import { Toaster } from "@/src/components/ui/sonner";
 import "./globals.css";
 
@@ -125,10 +126,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="smooth-scroll">
       <body
         className={`${playfair.variable} ${dmSans.variable} antialiased`}
       >
+        <ScrollProgress />
         <Navbar />
         {children}
         <Footer />

@@ -2,12 +2,23 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
-import { Briefcase, MapPin, Clock, Send } from "lucide-react";
+import { Briefcase, MapPin, Clock, Send, Users, GraduationCap, Heart } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Textarea } from "@/src/components/ui/textarea";
 import SectionHeading from "@/src/components/Common/SectionHeading";
 import { toast } from "sonner";
+import {
+  fadeInUp,
+  staggerContainer,
+  staggerContainerFast,
+  staggerContainerSlow,
+  staggerItem,
+  staggerItemScale,
+  cardHover,
+  cardHoverSubtle,
+  viewportOnce,
+} from "@/src/lib/animations";
 
 const jobs = [
   {
@@ -63,6 +74,24 @@ const internships = [
   },
 ];
 
+const benefits = [
+  {
+    icon: Users,
+    title: "Growth Opportunities",
+    desc: "Clear career paths with mentorship, training, and advancement opportunities.",
+  },
+  {
+    icon: Heart,
+    title: "Great Benefits",
+    desc: "Competitive salary, health insurance, retirement plans, and paid time off.",
+  },
+  {
+    icon: GraduationCap,
+    title: "Meaningful Work",
+    desc: "Be part of projects that shape communities and improve lives.",
+  },
+];
+
 const Careers = () => {
   const [loading, setLoading] = useState(false);
 
@@ -80,14 +109,13 @@ const Careers = () => {
 
   const JobCard = ({ job }: { job: (typeof jobs)[0] }) => (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="p-6 rounded-lg bg-card border border-border hover:border-primary/30 transition-colors"
+      variants={staggerItem}
+      whileHover={cardHoverSubtle}
+      className="p-6 rounded-xl bg-card border border-border hover:border-primary/30 hover:shadow-gold transition-all duration-300 group"
     >
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h3 className="font-display text-lg font-semibold text-foreground">
+          <h3 className="font-display text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
             {job.title}
           </h3>
           <div className="flex flex-wrap gap-3 mt-2 text-sm text-muted-foreground">
@@ -104,7 +132,7 @@ const Careers = () => {
         </div>
         <a
           href="#apply"
-          className="text-primary text-sm font-medium hover:underline shrink-0"
+          className="text-primary text-sm font-medium hover:underline shrink-0 group-hover:translate-x-0.5 transition-transform duration-200"
         >
           Apply Now →
         </a>
@@ -114,8 +142,12 @@ const Careers = () => {
 
   return (
     <main>
-      <section className="pt-32 pb-20 px-4 md:pt-40 md:pb-28 md:px-8 bg-secondary">
-        <div className="container-wide">
+      <section className="pt-32 pb-20 px-4 md:pt-40 md:pb-28 md:px-8 bg-secondary relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
+        </div>
+        <div className="container-wide relative z-10">
           <SectionHeading
             label="Careers"
             title="Join Our Team"
@@ -129,36 +161,30 @@ const Careers = () => {
       <section className="section-padding bg-background">
         <div className="container-wide">
           <SectionHeading label="Why Lxyron" title="Why Work With Us" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {[
-              {
-                title: "Growth Opportunities",
-                desc: "Clear career paths with mentorship, training, and advancement opportunities.",
-              },
-              {
-                title: "Great Benefits",
-                desc: "Competitive salary, health insurance, retirement plans, and paid time off.",
-              },
-              {
-                title: "Meaningful Work",
-                desc: "Be part of projects that shape communities and improve lives.",
-              },
-            ].map((item, i) => (
+          <motion.div
+            variants={staggerContainerSlow}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+          >
+            {benefits.map((item) => (
               <motion.div
                 key={item.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="text-center p-6"
+                variants={staggerItemScale}
+                whileHover={cardHover}
+                className="text-center p-8 rounded-xl bg-card border border-border hover:border-primary/20 hover:shadow-gold transition-all duration-300 group"
               >
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 group-hover:shadow-gold transition-all duration-300">
+                  <item.icon className="w-7 h-7 text-primary" />
+                </div>
                 <h3 className="font-display text-lg font-semibold text-foreground mb-2">
                   {item.title}
                 </h3>
                 <p className="text-muted-foreground text-sm">{item.desc}</p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -166,11 +192,17 @@ const Careers = () => {
       <section className="section-padding bg-section-alt">
         <div className="container-wide">
           <SectionHeading label="Open Positions" title="Current Job Openings" />
-          <div className="space-y-4 max-w-3xl mx-auto">
+          <motion.div
+            variants={staggerContainerFast}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            className="space-y-4 max-w-3xl mx-auto"
+          >
             {jobs.map((job) => (
               <JobCard key={job.title} job={job} />
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -182,11 +214,17 @@ const Careers = () => {
             title="Internship Opportunities"
             description="Kickstart your career in construction and design with our internship program."
           />
-          <div className="space-y-4 max-w-3xl mx-auto">
+          <motion.div
+            variants={staggerContainerFast}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            className="space-y-4 max-w-3xl mx-auto"
+          >
             {internships.map((job) => (
               <JobCard key={job.title} job={job} />
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -195,43 +233,93 @@ const Careers = () => {
         <div className="container-wide max-w-2xl">
           <SectionHeading label="Apply" title="Submit Your Application" />
           <motion.form
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
             onSubmit={handleSubmit}
             className="space-y-4"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input placeholder="Full Name *" required maxLength={100} />
-              <Input
-                type="email"
-                placeholder="Email *"
-                required
-                maxLength={255}
-              />
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+              >
+                <Input placeholder="Full Name *" required maxLength={100} />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.15 }}
+              >
+                <Input
+                  type="email"
+                  placeholder="Email *"
+                  required
+                  maxLength={255}
+                />
+              </motion.div>
             </div>
-            <Input placeholder="Phone Number" maxLength={20} />
-            <Input
-              placeholder="Position You're Applying For *"
-              required
-              maxLength={100}
-            />
-            <Input placeholder="LinkedIn / Portfolio URL" maxLength={500} />
-            <Textarea
-              placeholder="Tell us about yourself and why you'd be a great fit..."
-              rows={5}
-              required
-              maxLength={2000}
-            />
-            <Button
-              type="submit"
-              size="lg"
-              disabled={loading}
-              className="w-full"
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
             >
-              {loading ? "Submitting..." : "Submit Application"}{" "}
-              <Send className="ml-2 w-4 h-4" />
-            </Button>
+              <Input placeholder="Phone Number" maxLength={20} />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.25 }}
+            >
+              <Input
+                placeholder="Position You're Applying For *"
+                required
+                maxLength={100}
+              />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+            >
+              <Input placeholder="LinkedIn / Portfolio URL" maxLength={500} />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.35 }}
+            >
+              <Textarea
+                placeholder="Tell us about yourself and why you'd be a great fit..."
+                rows={5}
+                required
+                maxLength={2000}
+              />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+            >
+              <Button
+                type="submit"
+                size="lg"
+                disabled={loading}
+                className="w-full shadow-gold group"
+              >
+                {loading ? "Submitting..." : "Submit Application"}{" "}
+                <Send className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+              </Button>
+            </motion.div>
           </motion.form>
         </div>
       </section>
